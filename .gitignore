@@ -141,6 +141,7 @@ Thumbs.db
 db.sqlite3
 *.pyc
 *.log
+local_settings.py
 
 # Android Studio関連
 .gradle
