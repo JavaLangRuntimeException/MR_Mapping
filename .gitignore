@@ -142,6 +142,8 @@ db.sqlite3
 *.pyc
 *.log
 local_settings.py
+# Python 仮想環境フォルダー
+venv/
 
 # Android Studio関連
 .gradle
