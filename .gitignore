@@ -71,6 +71,70 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# This .gitignore file is tailored for Unity projects using Meta XR Interaction SDK, OVR Samples, and Meta XR All-in-One SDK.
+
+# Unity-specific
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Meta/Oculus SDK-specific directories (adjust as necessary)
+# These are examples and might not be applicable to all projects.
+# Check the documentation of the SDKs you're using to make sure.
+Assets/Oculus/
+Assets/VR/
+Assets/Meta/
+
+# Generated files by Unity IDE
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+
+# OS generated files
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# VS Code directories
+.vscode/
+
+# Rider directories
+.idea/
+
+# User-specific files
+*.userprefs
+*.pidb
+# Uncomment if you wish to ignore the asset store tools plugin
+# [Aa]ssets/[Pp]lugin/[Ee]ditor/[Jj]etBrains*
+
+# Backup & Temp files
+*~
+*.bak
+*.swp
+*.tmp
+
+# Misc
+*.apk
+*.unitypackage
+*.log
+
+
 # Django関連
 .env
 .venv
