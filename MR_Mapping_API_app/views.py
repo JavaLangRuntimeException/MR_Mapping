@@ -10,17 +10,17 @@ from rest_framework.response import Response
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 class NaviViewSet(viewsets.ModelViewSet):
     queryset = Navi.objects.all()
     serializer_class = NaviSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 class LoginViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
