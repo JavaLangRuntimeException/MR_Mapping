@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'MR_Mapping_API_app',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -76,9 +77,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'MR_Mapping_API.wsgi.application'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    ]
+        'rest_framework.permissions.AllowAny',
+    ],
 }
 
 
