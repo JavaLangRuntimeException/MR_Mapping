@@ -32,3 +32,8 @@ class NaviSerializer(serializers.ModelSerializer):
     class Meta:
         model = Navi
         fields = '__all__'
+
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
