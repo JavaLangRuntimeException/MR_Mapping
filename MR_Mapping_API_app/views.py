@@ -28,9 +28,7 @@ class LoginViewSet(viewsets.ViewSet):
     def create(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-
         user = authenticate(username=username, password=password)
-
         if user is not None:
             token, _ = Token.objects.get_or_create(user=user)
             return Response({'token': token.key}, status=status.HTTP_200_OK)
