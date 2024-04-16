@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from .models import Room, Navi
 from .serializers import RoomSerializer, NaviSerializer, UserSerializer
 from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -10,17 +10,17 @@ from rest_framework.response import Response
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 class NaviViewSet(viewsets.ModelViewSet):
     queryset = Navi.objects.all()
     serializer_class = NaviSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 class LoginViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
