@@ -18,3 +18,18 @@ class NaviViewSet(viewsets.ModelViewSet):
     queryset = Navi.objects.all()
     serializer_class = NaviSerializer
     permission_classes = [AllowAny]
+
+class LoginViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
+
+    def create(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
