@@ -5,7 +5,6 @@ class Room(models.Model):
     name = models.CharField(max_length=255)
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
-    
 
     def __str__(self):
         return self.name
