@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
                 '127.0.0.1',
+                '0.0.0.0',
                 '.herokuapp.com',]
 
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'MR_Mapping_API_app',
     'rest_framework',
     'rest_framework.authtoken',
+
 ]
 
 MIDDLEWARE = [
