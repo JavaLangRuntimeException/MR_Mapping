@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from .models import Room, Navi
 from .serializers import RoomSerializer, NaviSerializer, UserSerializer
 from django.contrib.auth.models import User
@@ -18,6 +18,11 @@ class RoomViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
 class NaviViewSet(viewsets.ModelViewSet):
+    queryset = Navi.objects.all()
+    serializer_class = NaviSerializer
+    permission_classes = [AllowAny]
+
+class NaviCreateView(generics.CreateAPIView):
     queryset = Navi.objects.all()
     serializer_class = NaviSerializer
     permission_classes = [AllowAny]
