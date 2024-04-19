@@ -78,4 +78,30 @@ class APIClient {
             }
         }.resume()
     }
+    
+    func PostVavis(completion: @escaping (Result<[Room], Error>) -> Void) {
+        let navisURL = URL(string: "\(baseURL)/navis/")!
+        var request = URLRequest(url: navisURL)
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let data = data {
+                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                    let navis = jsonResponse.compactMap { (naviDict: [String: Any]) -> Navi? in
+                        guard let id = naviDict["id"] as? Int,
+                              let arr_room_id = naviDict["arr_room_id"] as? Int,
+                              let dep_room_id = naviDict["dep_room_id"] as? Int,
+                              let user_id = naviDict["user_id"] as? Int else {
+                            return nil
+                        }
+                        return Navi(id: id, arr_room_id: arr_room_id, dep_room_id: dep_room_id, user_id:user_id)
+                    }
+                    completion(.success(navis))
+                } else {
+                    completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
+                }
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }.resume()
+    })
 }

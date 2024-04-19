@@ -1,49 +1,50 @@
 //
-//  RoomModelController.swift
+//  NaviModelContoroller.swift
 //  MR_Mapping_iOS
 //
-//  Created by 棚橋柊太 on 2024/04/16.
+//  Created by 棚橋柊太 on 2024/04/19.
 //
 
 import Foundation
 import UIKit
 
-class RoomListViewController: UIViewController, UITableViewDataSource {
+class NaviListViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
-    var rooms: [Room] = []
+    var navis: [Navi] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = self
         
-        fetchRooms()
+        PostRooms()
     }
     
-    func fetchRooms() {
-        APIClient.shared.fetchRooms { result in
+    func PostVavis() {
+        APIClient.shared.PostVavis { result in
             switch result {
-            case .success(let rooms):
-                self.rooms = rooms
+            case .success(let navis):
+                self.navis = navis
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
             case .failure(let error):
-                print("Failed to fetch rooms: \(error.localizedDescription)")
+                print("Failed to post navis: \(error.localizedDescription)")
             }
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rooms.count
+        return navis.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomCell", for: indexPath)
-        let room = rooms[indexPath.row]
-        cell.textLabel?.text = room.name
+        let navi = navis[indexPath.row]
+        cell.textLabel?.text = navi.name
         return cell
     }
     
+
 }
