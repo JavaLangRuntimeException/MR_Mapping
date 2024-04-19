@@ -79,44 +79,29 @@ class APIClient {
         }.resume()
     }
     
-    func postNavi(depRoomId: Int, arrRoomId: Int, userId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        let naviURL = URL(string: "\(baseURL)/navi/create/")!
-        var request = URLRequest(url: naviURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let parameters: [String: Any] = [
-            "dep_room": depRoomId,
-            "arr_room": arrRoomId,
-            "user": userId
-        ]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
-        
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let _ = data {
-                completion(.success(()))
-            } else if let error = error {
-                completion(.failure(error))
-            }
-        }.resume()
-    }
-    
-    func fetchNavis(completion: @escaping (Result<[Navi], Error>) -> Void) {
+    func PostVavis(completion: @escaping (Result<[Room], Error>) -> Void) {
         let navisURL = URL(string: "\(baseURL)/navis/")!
         var request = URLRequest(url: navisURL)
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let data = data {
-                do {
-                    let decoder = JSONDecoder()
-                    let navis = try decoder.decode([Navi].self, from: data)
+                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                    let navis = jsonResponse.compactMap { (naviDict: [String: Any]) -> Navi? in
+                        guard let id = naviDict["id"] as? Int,
+                              let arr_room_id = naviDict["arr_room_id"] as? Int,
+                              let dep_room_id = naviDict["dep_room_id"] as? Int,
+                              let user_id = naviDict["user_id"] as? Int else {
+                            return nil
+                        }
+                        return Navi(id: id, arr_room_id: arr_room_id, dep_room_id: dep_room_id, user_id:user_id)
+                    }
                     completion(.success(navis))
-                } catch {
-                    completion(.failure(error))
+                } else {
+                    completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
                 }
             } else if let error = error {
                 completion(.failure(error))
             }
         }.resume()
-    }
-    
+    })
 }

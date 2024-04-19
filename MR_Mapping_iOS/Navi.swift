@@ -7,9 +7,14 @@
 
 import Foundation
 struct Navi: Codable, Identifiable {
-    let id: Int
-    let arr_room_id: Int
-    let dep_room_id: Int
-    let user_id: Int
+    let id = UUID()
+    let depRoom: Int
+    let arrRoom: Int
+    let user: Int
     
+    enum CodingKeys: String, CodingKey {
+        case depRoom = "dep_room"
+        case arrRoom = "arr_room"
+        case user
+    }
 }

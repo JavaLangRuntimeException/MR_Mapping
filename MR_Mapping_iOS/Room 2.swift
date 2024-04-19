@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct Room: Codable, Identifiable, Hashable {
+struct Room: Codable, Identifiable {
     let id: Int
     let name: String
     let x: Int

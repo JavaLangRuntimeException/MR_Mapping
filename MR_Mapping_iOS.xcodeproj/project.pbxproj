@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DE1F0CC32BD25F3F0028316E /* Navi.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1F0CC22BD25F3F0028316E /* Navi.swift */; };
 		DE1F0CC52BD260550028316E /* NaviModelContoroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1F0CC42BD260550028316E /* NaviModelContoroller.swift */; };
+		DECA3ED02BD28FF9002BD755 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECA3ECF2BD28FF9002BD755 /* PopupView.swift */; };
 		DED86E3F2BCE70350036D5D9 /* MR_Mapping_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED86E3E2BCE70350036D5D9 /* MR_Mapping_iOSApp.swift */; };
 		DED86E412BCE70350036D5D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED86E402BCE70350036D5D9 /* ContentView.swift */; };
 		DED86E432BCE70350036D5D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DED86E422BCE70350036D5D9 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		DE1F0CC22BD25F3F0028316E /* Navi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navi.swift; sourceTree = "<group>"; };
 		DE1F0CC42BD260550028316E /* NaviModelContoroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviModelContoroller.swift; sourceTree = "<group>"; };
+		DECA3ECF2BD28FF9002BD755 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		DED86E3B2BCE70350036D5D9 /* MR_Mapping_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MR_Mapping_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DED86E3E2BCE70350036D5D9 /* MR_Mapping_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MR_Mapping_iOSApp.swift; sourceTree = "<group>"; };
 		DED86E402BCE70350036D5D9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				DED86E6A2BCE70EF0036D5D9 /* LoginViewController.swift */,
 				DED86E6C2BCE73A80036D5D9 /* RegisterViewController.swift */,
 				DED86E402BCE70350036D5D9 /* ContentView.swift */,
+				DECA3ECF2BD28FF9002BD755 /* PopupView.swift */,
 				DED86E422BCE70350036D5D9 /* Assets.xcassets */,
 				DED86E442BCE70350036D5D9 /* Preview Content */,
 			);
@@ -281,6 +284,7 @@
 				DED86E6F2BCE73C70036D5D9 /* RoomModelController.swift in Sources */,
 				DED86E6B2BCE70EF0036D5D9 /* LoginViewController.swift in Sources */,
 				DED86E712BCE73DE0036D5D9 /* Room.swift in Sources */,
+				DECA3ED02BD28FF9002BD755 /* PopupView.swift in Sources */,
 				DE1F0CC32BD25F3F0028316E /* Navi.swift in Sources */,
 				DED86E6D2BCE73A80036D5D9 /* RegisterViewController.swift in Sources */,
 				DED86E412BCE70350036D5D9 /* ContentView.swift in Sources */,
