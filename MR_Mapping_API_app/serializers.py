@@ -25,13 +25,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Navi serializer
 class NaviSerializer(serializers.ModelSerializer):
-    dep_room = RoomSerializer(read_only=True)
-    arr_room = RoomSerializer(read_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-
     class Meta:
         model = Navi
-        fields = '__all__'
+        fields = ['dep_room', 'arr_room', 'user']
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
