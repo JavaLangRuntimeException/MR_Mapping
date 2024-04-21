@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '').lower() == 'true'
 
 ALLOWED_HOSTS = ['localhost',
                 '127.0.0.1',
@@ -88,16 +88,16 @@ REST_FRAMEWORK = {
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-SECRET_KEY = 'django-insecure-d50pg06a8(i&%g=7szodtuaymtoe1diivf2(i()7y*!q96i1lu'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Or 'django.db.backends.postgresql_psycopg2'
-        'NAME': 'd5sbgufcd1h7mb',
-        'USER': 'u2k285ef1jsqbq',
-        'PASSWORD': 'p875b78e1e10f25979e0fe35a736a663c49414f2e348131701e1a502736dbc8a2',
-        'HOST': 'c7gljno857ucsl.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),
     }
 }
 
