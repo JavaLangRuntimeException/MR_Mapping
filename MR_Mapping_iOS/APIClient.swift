@@ -1,10 +1,3 @@
-//
-//  APIClient.swift
-//  MR_Mapping_iOS
-//
-//  Created by 棚橋柊太 on 2024/04/16.
-//
-
 import Foundation
 
 let baseURL = "https://mr-mapping-88ceb7c2955d.herokuapp.com"

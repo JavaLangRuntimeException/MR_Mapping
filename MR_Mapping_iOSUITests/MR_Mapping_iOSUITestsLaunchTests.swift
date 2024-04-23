@@ -1,10 +1,3 @@
-//
-//  MR_Mapping_iOSUITestsLaunchTests.swift
-//  MR_Mapping_iOSUITests
-//
-//  Created by 棚橋柊太 on 2024/04/16.
-//
-
 import XCTest
 
 final class MR_Mapping_iOSUITestsLaunchTests: XCTestCase {

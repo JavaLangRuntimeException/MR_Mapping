@@ -1,10 +1,3 @@
-//
-//  NaviModelContoroller.swift
-//  MR_Mapping_iOS
-//
-//  Created by 棚橋柊太 on 2024/04/19.
-//
-
 import Foundation
 import UIKit
 
