@@ -48,6 +48,7 @@
 		DEBCF4972C17F58B00A9C083 /* MR_Mapping_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MR_Mapping_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DEBCF4A42C17F5CF00A9C083 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DEBCF4A62C17F71400A9C083 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
+		DEBCF4AA2C1807E200A9C083 /* MR-Mapping-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MR-Mapping-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +99,7 @@
 		DEBCF4792C17F58900A9C083 /* MR_Mapping_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				DEBCF4AA2C1807E200A9C083 /* MR-Mapping-iOS-Info.plist */,
 				DEBCF4A62C17F71400A9C083 /* TitleView.swift */,
 				DEBCF47A2C17F58900A9C083 /* MR_Mapping_iOSApp.swift */,
 				DEBCF47C2C17F58900A9C083 /* ContentView.swift */,
@@ -433,6 +435,8 @@
 				DEVELOPMENT_TEAM = 5D438V9SF5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "MR-Mapping-iOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -462,6 +466,8 @@
 				DEVELOPMENT_TEAM = 5D438V9SF5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "MR-Mapping-iOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
