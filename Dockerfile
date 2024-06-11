@@ -9,6 +9,9 @@ COPY . .
 
 RUN go mod tidy
 
-RUN go build -o main .
+# ビルドステップ
+RUN go build -o starter -ldflags="-s -w" main.go
+RUN chmod +x starter
 
-CMD ["./main"]
+# 実行コマンド
+CMD ["./starter"]

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -33,7 +34,7 @@ func main() {
 	r.GET("/ws", func(c *gin.Context) {
 		conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
-			c.String(400, "Failed to upgrade connection")
+			log.Println("Failed to upgrade connection:", err)
 			return
 		}
 		defer conn.Close()
@@ -41,7 +42,7 @@ func main() {
 		for {
 			messageType, p, err := conn.ReadMessage()
 			if err != nil {
-				c.String(400, "Failed to read message")
+				log.Println("Failed to read message:", err)
 				return
 			}
 
@@ -50,20 +51,26 @@ func main() {
 			// 受信したメッセージをRedisに保存
 			err = rdb.Set(context.Background(), "message", p, 0).Err()
 			if err != nil {
-				c.String(500, "Failed to save message to Redis")
+				log.Println("Failed to save message to Redis:", err)
+				if err := conn.WriteMessage(websocket.TextMessage, []byte("Failed to save message to Redis")); err != nil {
+					log.Println("Failed to write message:", err)
+				}
 				return
 			}
 
 			// Redisから最新のメッセージを取得
 			val, err := rdb.Get(context.Background(), "message").Result()
 			if err != nil {
-				c.String(500, "Failed to get message from Redis")
+				log.Println("Failed to get message from Redis:", err)
+				if err := conn.WriteMessage(websocket.TextMessage, []byte("Failed to get message from Redis")); err != nil {
+					log.Println("Failed to write message:", err)
+				}
 				return
 			}
 			println("Message from Redis:", val)
 
 			if err := conn.WriteMessage(messageType, p); err != nil {
-				c.String(500, "Failed to write message")
+				log.Println("Failed to write message:", err)
 				return
 			}
 		}
