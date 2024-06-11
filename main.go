@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
@@ -16,6 +17,8 @@ var upgrader = websocket.Upgrader{
 }
 
 var rdb *redis.Client
+var connectedClients = make(map[*websocket.Conn]bool)
+var clientsMutex sync.Mutex
 
 func main() {
 	r := gin.Default()
@@ -37,7 +40,16 @@ func main() {
 			log.Println("Failed to upgrade connection:", err)
 			return
 		}
-		defer conn.Close()
+		defer func() {
+			clientsMutex.Lock()
+			delete(connectedClients, conn)
+			clientsMutex.Unlock()
+			conn.Close()
+		}()
+
+		clientsMutex.Lock()
+		connectedClients[conn] = true
+		clientsMutex.Unlock()
 
 		for {
 			messageType, p, err := conn.ReadMessage()
@@ -58,21 +70,15 @@ func main() {
 				return
 			}
 
-			// Redisから最新のメッセージを取得
-			val, err := rdb.Get(context.Background(), "message").Result()
-			if err != nil {
-				log.Println("Failed to get message from Redis:", err)
-				if err := conn.WriteMessage(websocket.TextMessage, []byte("Failed to get message from Redis")); err != nil {
+			// 受信したメッセージをすべての接続中のクライアントにブロードキャスト
+			clientsMutex.Lock()
+			for client := range connectedClients {
+				if err := client.WriteMessage(messageType, p); err != nil {
 					log.Println("Failed to write message:", err)
+					delete(connectedClients, client)
 				}
-				return
 			}
-			println("Message from Redis:", val)
-
-			if err := conn.WriteMessage(messageType, p); err != nil {
-				log.Println("Failed to write message:", err)
-				return
-			}
+			clientsMutex.Unlock()
 		}
 	})
 
