@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/gorilla/websocket"
@@ -20,7 +18,7 @@ func main() {
 	r := gin.Default()
 
 	// RedisのURLを環境変数から取得
-	redisURL := os.Getenv("REDIS_URL")
+	redisURL := "redis://:p06d882614e06cb8d50cc7a26ac8d9f938cb6f494037e264d8c759b7d56acb589@ec2-3-211-177-74.compute-1.amazonaws.com:25949"
 	opt, _ := redis.ParseURL(redisURL)
 	rdb = redis.NewClient(opt)
 
