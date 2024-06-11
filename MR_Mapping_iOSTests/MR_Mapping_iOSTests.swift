@@ -1,3 +1,10 @@
+//
+//  MR_Mapping_iOSTests.swift
+//  MR_Mapping_iOSTests
+//
+//  Created by 棚橋柊太 on 2024/06/11.
+//
+
 import XCTest
 @testable import MR_Mapping_iOS
 
