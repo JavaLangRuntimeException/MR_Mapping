@@ -7,6 +7,7 @@ import (
 	"mrmapping.com/mrmapping/database"
 	"mrmapping.com/mrmapping/routers"
 	"mrmapping.com/mrmapping/ws"
+	"os"
 )
 
 func main() {
@@ -22,12 +23,20 @@ func main() {
 	// ルーティングの設定
 	routers.SetupRouter(r)
 
-	// サーバーをポート8000で起動
-	r.Run(":8080")
+	// ポート番号の取得
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // デフォルトのポート番号
+	}
 
 	// サーバーの起動をログに記録
-	log.Println("Server started ")
+	log.Printf("Server started on port %s", port)
+
+	// サーバーを起動
+	if err := r.Run(":" + port); err != nil {
+		log.Fatal(err)
+	}
 
 	ws.Run()
-	log.Println("Websocket started ")
+	log.Println("Websocket started")
 }
