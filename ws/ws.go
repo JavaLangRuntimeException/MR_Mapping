@@ -2,10 +2,10 @@ package ws
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/gorilla/websocket"
 	"log"
+	"net/http"
 	"os"
 	"sync"
 )
@@ -19,9 +19,7 @@ var rdb *redis.Client
 var connectedClients = make(map[*websocket.Conn]bool)
 var clientsMutex sync.Mutex
 
-func Run() {
-	r := gin.Default()
-
+func Run(port string) error {
 	// RedisのURLを環境変数から取得
 	redisURL := os.Getenv("REDIS_URL")
 	if redisURL == "" {
@@ -29,12 +27,12 @@ func Run() {
 	}
 	opt, err := redis.ParseURL(redisURL)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	rdb = redis.NewClient(opt)
 
-	r.GET("/ws", func(c *gin.Context) {
-		conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			log.Println("Failed to upgrade connection:", err)
 			return
@@ -81,9 +79,6 @@ func Run() {
 		}
 	})
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	r.Run(":" + port)
+	log.Printf("WebSocket server started on :%s/ws", port)
+	return http.ListenAndServe(":"+port, nil)
 }

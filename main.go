@@ -29,16 +29,20 @@ func main() {
 		port = "8080" // デフォルトのポート番号
 	}
 
+	// WebSocketサーバーの起動
 	go func() {
-		ws.Run()
-		log.Println("Websocket started")
+		err := ws.Run(port)
+		if err != nil {
+			log.Fatal("Failed to start WebSocket server: ", err)
+		}
+		log.Println("WebSocket server started on /ws")
 	}()
 
-	// サーバーの起動をログに記録
-	log.Printf("Server started on port %s", port)
+	// HTTPサーバーの起動をログに記録
+	log.Printf("HTTP server started on port %s", port)
 
-	// サーバーを起動
+	// HTTPサーバーを起動
 	if err := r.Run(":" + port); err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to start HTTP server: ", err)
 	}
 }
