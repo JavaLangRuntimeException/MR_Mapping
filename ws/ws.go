@@ -1,13 +1,12 @@
 package ws
 
 import (
-	"context"
-	"github.com/go-redis/redis/v8"
-	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"os"
 	"sync"
+
+	"github.com/gorilla/websocket"
 )
 
 var upgrader = websocket.Upgrader{
@@ -15,70 +14,106 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-var rdb *redis.Client
-var connectedClients = make(map[*websocket.Conn]bool)
-var clientsMutex sync.Mutex
+// Messageの型を作る
+type Message struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+	Z float64 `json:"z"`
+}
 
-func Run(port string) error {
-	// RedisのURLを環境変数から取得
-	redisURL := os.Getenv("REDIS_URL")
-	if redisURL == "" {
-		redisURL = "redis://:p06d882614e06cb8d50cc7a26ac8d9f938cb6f494037e264d8c759b7d56acb589@ec2-3-211-177-74.compute-1.amazonaws.com:25949"
+// Client represents a single WebSocket connection
+type Client struct {
+	conn *websocket.Conn
+}
+
+// ClientManager manages all active WebSocket connections
+type ClientManager struct {
+	clients    map[*Client]bool
+	broadcast  chan Message
+	register   chan *Client
+	unregister chan *Client
+	mu         sync.Mutex
+}
+
+// NewClientManager creates a new ClientManager
+func NewClientManager() *ClientManager {
+	return &ClientManager{
+		clients:    make(map[*Client]bool),
+		broadcast:  make(chan Message),
+		register:   make(chan *Client),
+		unregister: make(chan *Client),
 	}
-	opt, err := redis.ParseURL(redisURL)
+}
+
+// Start runs the client manager
+func (manager *ClientManager) Start() {
+	for {
+		select {
+		case client := <-manager.register:
+			manager.mu.Lock()
+			manager.clients[client] = true
+			manager.mu.Unlock()
+		case client := <-manager.unregister:
+			manager.mu.Lock()
+			if _, ok := manager.clients[client]; ok {
+				delete(manager.clients, client)
+				client.conn.Close()
+			}
+			manager.mu.Unlock()
+		case message := <-manager.broadcast:
+			manager.mu.Lock()
+			for client := range manager.clients {
+				err := client.conn.WriteJSON(message)
+				if err != nil {
+					log.Printf("error: %v", err)
+					client.conn.Close()
+					delete(manager.clients, client)
+				}
+			}
+			manager.mu.Unlock()
+		}
+	}
+}
+
+var manager = NewClientManager()
+
+func wsHandler(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		return err
+		log.Println(err)
+		return
 	}
-	rdb = redis.NewClient(opt)
+	client := &Client{conn: conn}
+	manager.register <- client
 
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		conn, err := upgrader.Upgrade(w, r, nil)
+	defer func() {
+		manager.unregister <- client
+	}()
+
+	for {
+		var msg Message
+		err := conn.ReadJSON(&msg)
 		if err != nil {
-			log.Println("Failed to upgrade connection:", err)
-			return
+			log.Println("read:", err)
+			break
 		}
-		defer func() {
-			clientsMutex.Lock()
-			delete(connectedClients, conn)
-			clientsMutex.Unlock()
-			conn.Close()
-		}()
 
-		clientsMutex.Lock()
-		connectedClients[conn] = true
-		clientsMutex.Unlock()
+		log.Printf("recv: %+v", msg)
+		manager.broadcast <- msg
+	}
+}
 
-		for {
-			messageType, p, err := conn.ReadMessage()
-			if err != nil {
-				log.Println("Failed to read message:", err)
-				return
-			}
+func Run() {
+	go manager.Start()
 
-			println(string(p))
-
-			// 受信したメッセージをRedisに保存
-			err = rdb.Set(context.Background(), "message", p, 0).Err()
-			if err != nil {
-				log.Println("Failed to save message to Redis:", err)
-				if err := conn.WriteMessage(websocket.TextMessage, []byte("Failed to save message to Redis")); err != nil {
-					log.Println("Failed to write message:", err)
-				}
-				return
-			}
-
-			// 受信したメッセージをすべての接続中のクライアントにブロードキャスト
-			clientsMutex.Lock()
-			for client := range connectedClients {
-				if err := client.WriteMessage(messageType, p); err != nil {
-					log.Println("Failed to write message:", err)
-					delete(connectedClients, client)
-				}
-			}
-			clientsMutex.Unlock()
-		}
-	})
-
-	log.Printf("WebSocket server started on :%s/ws", port)
-	return http.ListenAndServe(":"+port, nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.HandleFunc("/ws", wsHandler)
+	log.Println("Starting server on :" + port)
+	err := http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

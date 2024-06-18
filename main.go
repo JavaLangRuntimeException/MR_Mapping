@@ -6,7 +6,6 @@ import (
 	"mrmapping.com/mrmapping/config"
 	"mrmapping.com/mrmapping/database"
 	"mrmapping.com/mrmapping/routers"
-	"mrmapping.com/mrmapping/ws"
 	"os"
 )
 
@@ -28,19 +27,6 @@ func main() {
 	if port == "" {
 		port = "8080" // デフォルトのポート番号
 	}
-
-	// WebSocketサーバーの起動
-	go func() {
-		err := ws.Run("8000")
-		if err != nil {
-			log.Fatal("Failed to start WebSocket server: ", err)
-		}
-		log.Println("WebSocket server started on /ws")
-	}()
-
-	// HTTPサーバーの起動をログに記録
-	log.Printf("HTTP server started on port %s", port)
-
 	// HTTPサーバーを起動
 	if err := r.Run(":" + port); err != nil {
 		log.Fatal("Failed to start HTTP server: ", err)

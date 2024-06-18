@@ -4,8 +4,7 @@ go 1.22.2
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/go-redis/redis/v8 v8.11.5
-	github.com/gorilla/websocket v1.4.2
+	github.com/gorilla/websocket v1.5.2
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/joho/godotenv v1.5.1
 )
