@@ -1,1 +1,1 @@
-web: bin/mr-mapping -timeout 90
+web: bin/mrmapping -timeout 90
