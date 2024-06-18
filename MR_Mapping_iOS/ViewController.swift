@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     // 1から4の数値が選択されたときに呼ばれるメソッド
     func numberSelected(_ number: Int) {
         // 選択された数値に対応するメッセージを作成
-        let message = "{\"start\", \"\(number)\"}"
+        let message = "{\"name\", \"\(number)\"}"
         
         // メッセージをUTF8エンコードしてData型に変換
         let messageData = message.data(using: .utf8)
