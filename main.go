@@ -29,6 +29,8 @@ func main() {
 		port = "8080" // デフォルトのポート番号
 	}
 
+	ws.Run()
+
 	// サーバーの起動をログに記録
 	log.Printf("Server started on port %s", port)
 
@@ -37,6 +39,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ws.Run()
 	log.Println("Websocket started")
 }
