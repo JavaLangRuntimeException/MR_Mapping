@@ -142,10 +142,5 @@ db.sqlite3
 *.pyc
 *.log
 
-# Android Studio関連
-.gradle
-.idea
-local.properties
-build/
-gradlew/
-gradle/wrapper/
+
+.env
