@@ -31,7 +31,7 @@ func main() {
 
 	// WebSocketサーバーの起動
 	go func() {
-		err := ws.Run(port)
+		err := ws.Run("8000")
 		if err != nil {
 			log.Fatal("Failed to start WebSocket server: ", err)
 		}
