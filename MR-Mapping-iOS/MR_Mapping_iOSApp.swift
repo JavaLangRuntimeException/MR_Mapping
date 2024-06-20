@@ -4,7 +4,7 @@ import SwiftUI
 struct MR_Mapping_iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            TitleView()
+            ContentView()
         }
     }
 }

@@ -1,8 +1,8 @@
 //
 //  MR_Mapping_iOSUITestsLaunchTests.swift
-//  MR_Mapping_iOSUITests
+//  MR-Mapping-iOSUITests
 //
-//  Created by 棚橋柊太 on 2024/06/11.
+//  Created by 棚橋柊太 on 2024/06/19.
 //
 
 import XCTest
@@ -17,6 +17,7 @@ final class MR_Mapping_iOSUITestsLaunchTests: XCTestCase {
         continueAfterFailure = false
     }
 
+    @MainActor
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launch()
