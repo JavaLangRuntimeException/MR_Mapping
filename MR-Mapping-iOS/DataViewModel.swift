@@ -2,7 +2,7 @@ import Foundation
 import SocketIO
 
 class DataViewModel: ObservableObject {
-private let manager = SocketManager(socketURL: URL(string: "ws://mr-mapping-ws-3f76a2e253dd.herokuapp.com/ws")!, config: [.log(true), .compress])
+    private let manager = SocketManager(socketURL: URL(string: "ws://mr-mapping-ws-3f76a2e253dd.herokuapp.com/ws")!, config: [.log(true), .compress])
     private var socket: SocketIOClient!
     
     @Published var receivedData: String = ""
@@ -30,8 +30,7 @@ private let manager = SocketManager(socketURL: URL(string: "ws://mr-mapping-ws-3
     }
     
     func sendData(id1: Int, id2: Int) {
-            let data = ["id1": id1, "id2": id2]
-            socket.emit("send data", data)
-        }
+        let data = ["id1": id1, "id2": id2]
+        socket.emit("send data", data)
+    }
 }
-
