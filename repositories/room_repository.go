@@ -29,12 +29,12 @@ func GetAllRooms() ([]models.Room, error) {
 
 // 指定されたIDのユーザーをデータベースから取得
 func GetRoom(id string) (models.Room, error) {
-	var room models.Room
-	query := "SELECT id, name, x, y FROM rooms WHERE id = $1"
-	err := database.DB.QueryRow(context.Background(), query, id).Scan(&room.ID, &room.Name, &room.X, &room.Y)
-	if err != nil {
-		return models.Room{}, err
-	}
+    var room models.Room
+    query := "SELECT id, name, x, y FROM rooms WHERE id = $1"
+    err := database.DB.QueryRow(context.Background(), query, id).Scan(&room.ID, &room.Name, &room.X, &room.Y)
+    if err != nil {
+        return models.Room{}, err
+    }
 
-	return room, nil
+    return room, nil
 }
