@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -68,6 +67,8 @@ func (manager *ClientManager) Start() {
 					log.Printf("error: %v", err)
 					client.conn.Close()
 					delete(manager.clients, client)
+				} else {
+					log.Printf("Broadcasted message to client: %+v", message)
 				}
 			}
 			manager.mu.Unlock()
@@ -100,15 +101,8 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 		log.Printf("Received message: %+v", msg)
 
-		// Process the received message
-		processedMsg := fmt.Sprintf("Data processed: id1=%d, id2=%d", msg.ID1, msg.ID2)
-
-		// Send the processed message back to the client
-		err = conn.WriteMessage(websocket.TextMessage, []byte(processedMsg))
-		if err != nil {
-			log.Println("write:", err)
-			break
-		}
+		// Broadcast the received message to all clients
+		manager.broadcast <- msg
 	}
 }
 
