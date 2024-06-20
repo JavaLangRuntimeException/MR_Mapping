@@ -6,12 +6,13 @@ import (
 	"os"
 	"sync"
 
-	"github.com/gorilla/websocket"
+	"github.com/googollee/go-socket.io"
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
+var server *socketio.Server
+
+func init() {
+	server = socketio.NewServer(nil)
 }
 
 // Messageの型を作る
@@ -22,7 +23,7 @@ type Message struct {
 
 // Client represents a single WebSocket connection
 type Client struct {
-	conn *websocket.Conn
+	conn socketio.Conn
 }
 
 // ClientManager manages all active WebSocket connections
@@ -62,12 +63,7 @@ func (manager *ClientManager) Start() {
 		case message := <-manager.broadcast:
 			manager.mu.Lock()
 			for client := range manager.clients {
-				err := client.conn.WriteJSON(message)
-				if err != nil {
-					log.Printf("error: %v", err)
-					client.conn.Close()
-					delete(manager.clients, client)
-				}
+				client.conn.Emit("data received", message)
 			}
 			manager.mu.Unlock()
 		}
@@ -76,40 +72,44 @@ func (manager *ClientManager) Start() {
 
 var manager = NewClientManager()
 
-func wsHandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	client := &Client{conn: conn}
-	manager.register <- client
-
-	defer func() {
-		manager.unregister <- client
-	}()
-
-	for {
-		var msg Message
-		err := conn.ReadJSON(&msg)
-		if err != nil {
-			log.Println("read:", err)
-			break
-		}
-
-		log.Printf("recv: %+v", msg)
-		manager.broadcast <- msg
-	}
-}
-
 func main() {
 	go manager.Start()
 
+	server.OnConnect("/", func(s socketio.Conn) error {
+		client := &Client{conn: s}
+		manager.register <- client
+
+		s.SetContext("")
+
+		log.Println("connected:", s.ID())
+
+		return nil
+	})
+
+	server.OnEvent("/", "send data", func(s socketio.Conn, msg Message) {
+		log.Printf("recv: %+v", msg)
+		manager.broadcast <- msg
+	})
+
+	server.OnError("/", func(s socketio.Conn, e error) {
+		log.Println("error:", e)
+	})
+
+	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+		log.Println("closed", reason)
+		client := &Client{conn: s}
+		manager.unregister <- client
+	})
+
+	go server.Serve()
+	defer server.Close()
+
+	http.Handle("/socket.io/", server)
+
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = "8080"
 	}
-	http.HandleFunc("/ws", wsHandler)
 	log.Println("Starting server on :" + port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
