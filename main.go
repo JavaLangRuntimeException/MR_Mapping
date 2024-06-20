@@ -16,7 +16,8 @@ var upgrader = websocket.Upgrader{
 
 // Messageの型を作る
 type Message struct {
-	NAME int `json:"name"`
+	ID1 int `json:"id1"`
+	ID2 int `json:"id2"`
 }
 
 // Client represents a single WebSocket connection
