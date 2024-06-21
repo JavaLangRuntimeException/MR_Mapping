@@ -1,8 +1,12 @@
 import SwiftUI
-import SocketIO
 
 struct DataView: View {
-    @ObservedObject var viewModel = DataViewModel()
+    @ObservedObject var client: WebSocketClient
+    
+    init() {
+        client = WebSocketClient()
+        client.setup(url: "ws://mr-mapping-ws-3f76a2e253dd.herokuapp.com/ws")
+    }
     
     let options = [1, 2, 3, 4, 5]
     @State private var selectedOption1 = 1
@@ -27,14 +31,19 @@ struct DataView: View {
             }
             
             Button("スタート") {
-                viewModel.sendData(id1: selectedOption1, id2: selectedOption2)
+                let message = ["id1": selectedOption1, "id2": selectedOption2]
+                let jsonData = try? JSONEncoder().encode(message)
+                if let jsonString = String(data: jsonData!, encoding: .utf8) {
+                    client.send(jsonString)
+                }
             }
+            .disabled(!client.isConnected)
         }
         .onAppear {
-            viewModel.connect()
+            client.connect()
         }
         .onDisappear {
-            viewModel.disconnect()
+            client.disconnect()
         }
     }
 }

@@ -1,73 +1,78 @@
 import Foundation
-import Starscream
 
-class DataViewModel: ObservableObject {
-    private var socket: WebSocket!
-    
-    @Published var receivedData: String = ""
-    
+class WebSocketClient: NSObject, ObservableObject {
+
+    private var webSocketTask: URLSessionWebSocketTask?
+
+    @Published var messages: [String] = []
+    @Published var isConnected: Bool = false
+
+    func setup(url: String) {
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+        webSocketTask = urlSession.webSocketTask(with: URL(string: url)!)
+    }
+
     func connect() {
-        guard let url = URL(string: "wss://mr-mapping-ws-3f76a2e253dd.herokuapp.com") else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 5
-        socket = WebSocket(request: request)
-        socket.delegate = self
-        socket.connect()
+        webSocketTask?.resume()
+        receive()
     }
-    
+
     func disconnect() {
-        socket.disconnect()
+        webSocketTask?.cancel(with: .goingAway, reason: nil)
     }
-    
-    func sendData(id1: Int, id2: Int) {
-        let data = ["id1": id1, "id2": id2]
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []),
-              let jsonString = String(data: jsonData, encoding: .utf8) else {
-            return
+
+    func send(_ message: String) {
+        let msg = URLSessionWebSocketTask.Message.string(message)
+        webSocketTask?.send(msg) { error in
+            if let error = error {
+                print(error)
+            }
         }
-        socket.write(string: jsonString)
+    }
+
+    private func receive() {
+        webSocketTask?.receive { [weak self] result in
+            switch result {
+            case .success(let message):
+                switch message {
+                case .string(let text):
+                    print("Received text message: \(text)")
+                    DispatchQueue.main.async {
+                        self?.messages.append(text)
+                    }
+                case .data(let data):
+                    print("Received binary message: \(data)")
+                @unknown default:
+                    fatalError()
+                }
+                self?.receive()
+            case .failure(let error):
+                print("Failed to receive message: \(error)")
+            }
+        }
     }
 }
 
-extension DataViewModel: WebSocketDelegate {
-    func didReceive(event: WebSocketEvent, client: WebSocket) {
-        switch event {
-        case .connected(let headers):
-            print("Websocket connected with headers: \(headers)")
-        case .disconnected(let reason, let code):
-            print("Websocket disconnected with reason: \(reason) and code: \(code)")
-        case .text(let string):
-            print("Received text: \(string)")
-            if let data = string.data(using: .utf8),
-               let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Int],
-               let id1 = dict["id1"],
-               let id2 = dict["id2"] {
-                DispatchQueue.main.async {
-                    self.receivedData = "Received data: id1=\(id1), id2=\(id2)"
-                }
-            }
-        case .binary(let data):
-            print("Received binary data: \(data)")
-        case .ping(_), .pong(_), .viabilityChanged(_), .reconnectSuggested(_), .cancelled:
-            break
-        case .error(let error):
-            print("Websocket error: \(error?.localizedDescription ?? "Unknown error")")
+extension WebSocketClient: URLSessionWebSocketDelegate {
+    
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+        print("didOpenWithProtocol")
+        DispatchQueue.main.async {
+            self.isConnected = true
         }
     }
     
-    func didReceive(error: Error, client: WebSocket) {
-        print("Websocket error: \(error.localizedDescription)")
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
+        print("didCloseWith: closeCode: \(closeCode) reason: \(String(describing: reason))")
+        DispatchQueue.main.async {
+            self.isConnected = false
+        }
     }
     
-    func didReceive(webSocketConnectionChange connectionChange: WebSocketConnectionChange, client: WebSocket) {
-        switch connectionChange {
-        case .connected:
-            print("Websocket connected")
-        case .disconnected:
-            print("Websocket disconnected")
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print("didCompleteWithError error: \(String(describing: error))")
+        DispatchQueue.main.async {
+            self.isConnected = false
         }
     }
 }
