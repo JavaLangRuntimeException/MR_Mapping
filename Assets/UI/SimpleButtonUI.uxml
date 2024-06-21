@@ -1,5 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; -unity-background-image-tint-color: rgb(47, 255, 217);">
-        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" style="background-color: rgb(71, 255, 236);" />
-    </ui:VisualElement>
-</ui:UXML>

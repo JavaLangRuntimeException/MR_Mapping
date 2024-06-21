@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
-  productGUID: 1bf25e162a9d34663afbf54726444533
+  productGUID: d810ee9a2c4544f5aa5431d1f7885aa7
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: MR-Mapping-unity
+  productName: zikken3
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -138,9 +138,8 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   bundleVersion: 0.1
   preloadedAssets:
-  - {fileID: 11400000, guid: cb074f3b70f26402c8043a1b97108215, type: 2}
-  - {fileID: -6753312095051065573, guid: e09a5f5e423fc424cac54a025e83e2e6, type: 2}
-  - {fileID: 11400000, guid: 33d50fcf249fc4668a9862c1ebed96e5, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: f4cddaf7349fa4e75932a41601d9766c, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -161,8 +160,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.MRMappingunity
-    Standalone: com.DefaultCompany.MR-Mapping-unity
+    Android: com.DefaultCompany.zikken3
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -536,9 +534,6 @@ PlayerSettings:
   - m_BuildTarget: WebGLSupport
     m_APIs: 0b000000
     m_Automatic: 1
-  - m_BuildTarget: WindowsStandaloneSupport
-    m_APIs: 02000000
-    m_Automatic: 0
   m_BuildTargetVRSettings:
   - m_BuildTarget: Standalone
     m_Enabled: 0
@@ -871,14 +866,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: MR-Mapping-unity
+  metroPackageName: zikken3
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: MR-Mapping-unity
+  metroApplicationDescription: zikken3
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -947,10 +942,10 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 639306ff-ab80-4113-bfe8-844372ebe93d
+  cloudProjectId: 4284f8bd-5ded-4862-9a83-b6d3be0d0898
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: MR-Mapping-unity
+  projectName: zikken3
   organizationId: unity_0af5bb632dc90e2c83ec
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

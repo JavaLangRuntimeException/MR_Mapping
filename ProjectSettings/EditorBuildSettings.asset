@@ -4,7 +4,40 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/OutSideScene.unity
+    guid: eac3a8c5b18834dfd99b01bd64db8965
+  - enabled: 1
+    path: Assets/Scenes/FoodPavilion.unity
+    guid: acef7f41c78b5467b8567a7c1e41e297
+  - enabled: 1
+    path: Assets/Scenes/2kai.unity
+    guid: b97253a95da0f4b4b8d7e1b48d20a2a4
+  - enabled: 1
+    path: Assets/Scenes/3kai.unity
+    guid: 937dbbb712cb8d843a9afa6c4d87aced
+  - enabled: 1
+    path: Assets/Scenes/1kai.unity
+    guid: 00cff7c6d81636b4fa914465cb67651e
+  - enabled: 1
+    path: Assets/Scenes/blender1-3.unity
+    guid: 1c0ed6285634e4d4bada602eb238f729
+  - enabled: 1
+    path: Assets/Scenes/blender2-1.unity
+    guid: 084c983f450315141b4dc5cc18a2a139
+  - enabled: 1
+    path: Assets/Scenes/blender2-2.unity
+    guid: a81e04fc3d54cc04ebe3f72c47cbb527
+  - enabled: 1
+    path: Assets/Scenes/blender2-3.unity
+    guid: 6448a583835e0d5468bc157c1482820a
+  - enabled: 1
+    path: Assets/Scenes/blender1-1.unity
+    guid: 546f31a559bcd1a46a60db87d5a0078a
+  - enabled: 1
+    path: Assets/Scenes/blender1-2.unity
+    guid: e7d03b748fe19f74b902bd4203ebbb1f
   m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 33d50fcf249fc4668a9862c1ebed96e5, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e09a5f5e423fc424cac54a025e83e2e6, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: ee20abbb721d05241937b922b569aef9, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 441405ad8b90aa64bb280b39bf04a526, type: 2}

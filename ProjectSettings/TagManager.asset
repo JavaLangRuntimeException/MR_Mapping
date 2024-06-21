@@ -3,12 +3,26 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - OutSideScene
+  - FoodPavilion
+  - myakumayku
+  - goal
+  - 1kai
+  - 2kai
+  - 3kai
+  - blender1-1
+  - blender1-2
+  - blender1-3
+  - blender2-1
+  - blender2-2
+  - blender2-3
+  - QuestButton
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Head
   - Water
   - UI
   - 
